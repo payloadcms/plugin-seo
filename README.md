@@ -1,3 +1,8 @@
+**Notice:**
+This plugin has moved! It is now supported by [PayloadCMS](https://payloadcms.com) — see the [official plugin](https://www.npmjs.com/package/@payloadcms/plugin-seo) for full details.
+
+---
+
 # Payload SEO Plugin
 
 [![NPM](https://img.shields.io/npm/v/@payloadcms/plugin-seo)](https://www.npmjs.com/package/@payloadcms/plugin-seo)

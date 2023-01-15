@@ -73,9 +73,13 @@ export default buildConfig({
           return doc?.excerpt?.value; // text field
         },
         metaTitle: {
-          postProcess: ({generatedTitle, pageContent, locale}) => {
-            return `Website.com — ${generatedTitle}`;
-          }
+          prefix: ({pageContent, locale}) => {
+            return `Website.com - `;
+          },
+          suffix: ({pageContent, locale}) => {
+            return ` | 2033`;
+          },
+          postProcess: ( {generatedTitle, pageContent, locale} ) => generatedTitle
         }
       }
     }),

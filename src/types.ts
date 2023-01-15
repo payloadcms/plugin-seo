@@ -13,9 +13,13 @@ export type AIOptions = {
   getPageContent: <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
   metaTitle?: {
     postProcess?:  (args: { generatedTitle: string, pageContent: string, locale: string}) => string
+    prefix?: (args: { pageContent: string, locale: string}) => string
+    suffix?: (args: { pageContent: string, locale: string}) => string
   },
   metaDescription?: {
     postProcess?:  (args: { generatedDescription: string, pageContent: string, locale: string}) => string
+    prefix?: (args: { pageContent: string, locale: string}) => string
+    suffix?: (args: { pageContent: string, locale: string}) => string
   }
 }
 
@@ -28,14 +32,14 @@ export type GPTAIOptions = {
     maxTokens?: number // Default: 20
     temperature?: number // The creativity of the AI. Default: 0.4
     model?: GPT3Model // Default: text-davinci-003
-    prompt?: (args: {pageContent: string, locale: string}) => string // Optional
+    prompt?: (args: { pageContent: string, locale: string }) => string // Optional
     stop?: string // Optional
   },
   metaDescription?: {
     maxTokens?: number // Default: 50
     temperature?: number // The creativity of the AI. Default: 0.4
     model?: GPT3Model // Default: text-davinci-003
-    prompt?: (args: {pageContent: string, locale: string}) => string // Optional
+    prompt?: (args: { pageContent: string, locale: string }) => string // Optional
     stop?: string // Optional
   }
 }

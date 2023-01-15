@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useField, useAllFormFields } from 'payload/components/forms';
 import { useLocale } from 'payload/components/utilities';
 import { FieldType, Options } from 'payload/dist/admin/components/forms/useField/types';
@@ -44,15 +44,19 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
     showError
   } = field;
 
+  const [readOnly, setReadOnly] = useState(false);
+
   const regenerateDescription = useCallback(() => {
     const { generateDescription } = pluginConfig;
 
     const getDescription = async () => {
+      setReadOnly(true);
       let generatedDescription;
       if (typeof generateDescription === 'function') {
         generatedDescription = await generateDescription({ doc: { ...fields }, locale });
       }
       setValue(generatedDescription);
+      setReadOnly(false);
     }
     getDescription();
   }, [
@@ -66,6 +70,7 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
     const { ai } = pluginConfig;
 
     const getDescription = async () => {
+      setReadOnly(true);
       setValue("Generating...")
 
       let pageContent: string|undefined;
@@ -77,6 +82,7 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
       }else{
         setValue("Error: No page content found.")
       }
+      setReadOnly(false);
     }
 
     getDescription();
@@ -169,6 +175,7 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
           onChange={setValue}
           value={value}
           showError={showError}
+          readOnly={readOnly}
           style={{
             marginBottom: 0
           }}

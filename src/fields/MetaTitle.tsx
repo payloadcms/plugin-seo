@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Props as TextFieldType } from 'payload/dist/admin/components/forms/field-types/Text/types';
 import { useLocale } from 'payload/components/utilities';
 import TextInputField from 'payload/dist/admin/components/forms/field-types/Text/Input';
@@ -42,15 +42,19 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
     showError
   } = field;
 
+  const [readOnly, setReadOnly] = useState(false);
+
   const regenerateTitle = useCallback(() => {
     const { generateTitle } = pluginConfig;
 
     const getTitle = async () => {
+      setReadOnly(true);
       let generatedTitle;
       if (typeof generateTitle === 'function') {
         generatedTitle = await generateTitle({ doc: { ...fields }, locale });
       }
       setValue(generatedTitle);
+      setReadOnly(false);
     }
     getTitle();
   }, [
@@ -64,6 +68,7 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
     const { ai } = pluginConfig;
 
     const getTitle = async () => {
+      setReadOnly(true);
       setValue("Generating...")
 
       let pageContent: string|undefined;
@@ -75,6 +80,7 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
       }else{
         setValue("Error: No page content found.")
       }
+      setReadOnly(false);
     }
     getTitle();
   }, [
@@ -167,6 +173,7 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
           onChange={setValue}
           value={value}
           showError={showError}
+          readOnly={readOnly}
           style={{
             marginBottom: 0
           }}

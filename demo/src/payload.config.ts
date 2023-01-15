@@ -71,6 +71,11 @@ export default buildConfig({
             return doc?.content.value.map(n => Node.string(n)).join('\n');
           }
           return doc?.excerpt?.value; // text field
+        },
+        metaTitle: {
+          postProcess: ({generatedTitle, pageContent, locale}) => {
+            return `Website.com — ${generatedTitle}`;
+          }
         }
       }
     }),

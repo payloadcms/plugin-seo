@@ -47,8 +47,17 @@ export const generateAIMetaTitleServer = async ({handler: {req, res, next}, plug
         stop:  pluginConfig.ai?.gpt3?.metaTitle?.stop ? pluginConfig.ai.gpt3.metaTitle.stop : ["than 50 characters long:"]
     })
 
+    let generated = response?.data?.choices[0]?.text ? response.data.choices[0].text.trim().replace(/"/g, "") : "Error";
+
+    if(pluginConfig.ai?.metaTitle?.postProcess) {
+        generated = pluginConfig.ai.metaTitle.postProcess({
+            generatedTitle: generated,
+            pageContent: body.pageContent,
+            locale: body.locale,
+        });
+    }
     
-    res.status(200).send({ generated: response?.data?.choices[0]?.text ? response.data.choices[0].text.trim().replace(/"/g, "") : "Error" });
+    res.status(200).send({ generated: generated });
 } 
 
 
@@ -95,7 +104,17 @@ export const generateAIMetaDescriptionServer = async ({handler: {req, res, next}
         stop: pluginConfig.ai?.gpt3?.metaDescription?.stop ? pluginConfig.ai.gpt3.metaDescription.stop : ["than 50 characters long:"]
     })
 
+    let generated = response?.data?.choices[0]?.text ? response.data.choices[0].text.trim().replace(/"/g, "") : "Error";
+
+    if(pluginConfig.ai?.metaDescription?.postProcess) {
+        generated = pluginConfig.ai.metaDescription.postProcess({
+            generatedDescription: generated,
+            pageContent: body.pageContent,
+            locale: body.locale,
+        });
+    }
+
     
-    res.status(200).send({ generated: response?.data?.choices[0]?.text ? response.data.choices[0].text.trim().replace(/"/g, "") : "Error" });
+    res.status(200).send({ generated: generated });
 } 
 

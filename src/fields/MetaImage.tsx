@@ -10,6 +10,7 @@ import { PluginConfig } from '../types';
 type UploadFieldWithProps = UploadFieldType & {
   path: string
   pluginConfig: PluginConfig
+  slug?: string
 };
 
 export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
@@ -19,6 +20,7 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
     fieldTypes,
     name,
     pluginConfig,
+    slug
   } = props as UploadFieldWithProps || {}; // TODO: this typing is temporary until payload types are updated for custom field props
 
   const field: FieldType<string> = useField(props as Options);
@@ -37,7 +39,7 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
     const getDescription = async () => {
       let generatedImage;
       if (typeof generateImage === 'function') {
-        generatedImage = await generateImage({ doc: { ...fields }, locale });
+        generatedImage = await generateImage({ doc: { ...fields }, locale, slug });
       }
       setValue(generatedImage);
     }

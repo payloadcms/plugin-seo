@@ -5,12 +5,14 @@ import { PluginConfig } from '../types';
 
 type PreviewFieldWithProps = Field & {
   pluginConfig: PluginConfig
+  slug?: string
 }
 export const Preview: React.FC<PreviewFieldWithProps | {}> = (props) => {
   const {
     pluginConfig: {
       generateURL
-    }
+    },
+    slug
   } = props as PreviewFieldWithProps || {}; // TODO: this typing is temporary until payload types are updated for custom field props;
 
   const { fields } = useWatchForm();
@@ -29,7 +31,7 @@ export const Preview: React.FC<PreviewFieldWithProps | {}> = (props) => {
   useEffect(() => {
     const getHref = async () => {
       if (typeof generateURL === 'function' && !href) {
-        const newHref = await generateURL({ doc: { fields } })
+        const newHref = await generateURL({ doc: { fields }, slug })
         setHref(newHref);
       }
     }

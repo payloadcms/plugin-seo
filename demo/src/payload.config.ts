@@ -59,24 +59,24 @@ export default buildConfig({
       ],
       tabbedUI: true,
       uploadsCollection: 'media',
-      generateTitle: ({ doc }: any) => `Website.com — ${doc?.title?.value}`,
-      generateDescription: ({ doc }: any) => doc?.excerpt?.value,
-      generateURL: ({ doc }: any) => `https://yoursite.com/${doc?.slug?.value || ''}`,
+      generateTitle: ({ doc } ) => `Website.com — ${doc?.title?.value }`,
+      generateDescription: ({ doc } ) => doc?.excerpt?.value,
+      generateURL: ({ doc } ) => `https://yoursite.com/${doc?.slug?.value || ''}`,
       ai: {
         gpt3: {
           apiKeySecret: process.env.GPT3_SECRET
         },
-        getPageContent: ({doc, locale}: {doc: any, locale: string}) => {
-          if(doc?.content?.value) { // richText field
+        getPageContent: ({doc, locale, slug}) => {
+          if(doc?.content?.value) { // richText field. Alternatively we can check for if(slug === 'pages')
             return doc?.content.value.map(n => Node.string(n)).join('\n');
           }
           return doc?.excerpt?.value; // text field
         },
         metaTitle: {
-          prefix: ({doc, pageContent, locale}) => {
+          prefix: ({doc, pageContent, locale, slug}) => {
             return `Website.com - `;
           },
-          suffix: ({doc, pageContent, locale}) => {
+          suffix: ({doc, pageContent, locale, slug}) => {
             return ` | 2033`;
           },
           postProcess: ( {doc, generatedTitle, pageContent, locale} ) => generatedTitle

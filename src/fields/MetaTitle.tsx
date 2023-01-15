@@ -17,6 +17,7 @@ const {
 type TextFieldWithProps = TextFieldType & {
   path: string
   pluginConfig: PluginConfig
+  slug?: string
 };
 
 export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
@@ -24,7 +25,8 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
     label,
     name,
     path,
-    pluginConfig
+    pluginConfig,
+    slug
   } = props as TextFieldWithProps || {}; // TODO: this typing is temporary until payload types are updated for custom field props
 
   const field: FieldType<string> = useField({
@@ -39,7 +41,7 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
   const {
     value,
     setValue,
-    showError
+    showError,
   } = field;
 
   const [readOnly, setReadOnly] = useState(false);
@@ -51,7 +53,7 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
       setReadOnly(true);
       let generatedTitle;
       if (typeof generateTitle === 'function') {
-        generatedTitle = await generateTitle({ doc: { ...fields }, locale });
+        generatedTitle = await generateTitle({ doc: { ...fields }, locale, slug });
       }
       setValue(generatedTitle);
       setReadOnly(false);
@@ -73,10 +75,10 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
 
       let pageContent: string|undefined;
       if (typeof ai?.getPageContent === 'function') {
-        pageContent = await ai?.getPageContent({ doc: { ...fields }, locale });
+        pageContent = await ai?.getPageContent({ doc: { ...fields }, locale, slug });
       }
       if(pageContent) {
-        setValue(await generateAIMetaTitleClient({ doc: { ...fields }, pageContent, locale }));
+        setValue(await generateAIMetaTitleClient({ doc: { ...fields }, pageContent, locale, slug }));
       }else{
         setValue("Error: No page content found.")
       }

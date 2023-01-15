@@ -9,7 +9,7 @@ import { Field, GroupField, TabsField } from 'payload/dist/fields/config/types';
 import { generateAIMetaDescriptionServer, generateAIMetaTitleServer } from './ai/Generator';
 
 const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
-  const seoFields: GroupField[] = [
+  const seoFields: (slug?: string) => GroupField[] = (slug?: string) => [
     {
       name: 'meta',
       label: 'SEO',
@@ -31,7 +31,7 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
           localized: true,
           admin: {
             components: {
-              Field: (props) => getMetaTitleField({ ...props, pluginConfig }),
+              Field: (props) => getMetaTitleField({ ...props, pluginConfig, slug }),
             },
           },
         },
@@ -41,7 +41,7 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
           localized: true,
           admin: {
             components: {
-              Field: (props) => getMetaDescriptionField({ ...props, pluginConfig }),
+              Field: (props) => getMetaDescriptionField({ ...props, pluginConfig, slug }),
             },
           },
         },
@@ -54,7 +54,7 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
           admin: {
             description: 'Maximum upload file size: 12MB. Recommended file size for images is <500KB.',
             components: {
-              Field: (props) => getMetaImageField({ ...props, pluginConfig }),
+              Field: (props) => getMetaImageField({ ...props, pluginConfig, slug }),
             },
           },
         } as Field] : [],
@@ -64,7 +64,7 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
           type: 'ui',
           admin: {
             components: {
-              Field: (props) => getPreviewField({ ...props, pluginConfig }),
+              Field: (props) => getPreviewField({ ...props, pluginConfig, slug }),
             },
           },
         },
@@ -115,7 +115,7 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
                 }],
               {
                 label: 'SEO',
-                fields: seoFields,
+                fields: seoFields(slug),
               }
             ]
           }]
@@ -130,7 +130,7 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
           ...collection,
           fields: [
             ...collection?.fields || [],
-            ...seoFields,
+            ...seoFields(slug),
           ],
         })
       }
@@ -156,7 +156,7 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
                 }],
               {
                 label: 'SEO',
-                fields: seoFields,
+                fields: seoFields(slug),
               }
             ]
           }]
@@ -171,7 +171,7 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
           ...global,
           fields: [
             ...global?.fields || [],
-            ...seoFields,
+            ...seoFields(slug),
           ],
         })
       }

@@ -1,25 +1,26 @@
 import { Field } from 'payload/dist/fields/config/types';
 
-export type GenerateTitle = <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
-export type GenerateDescription = <T = any>(args: {
-  doc: T
+export type GenerateTitle = (args: { doc: any; locale?: string, slug?: string }) => string | Promise<string>
+export type GenerateDescription = (args: {
+  doc: any
   locale?: string
+  slug?: string
 }) => string | Promise<string>
-export type GenerateImage = <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
-export type GenerateURL = <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
+export type GenerateImage = (args: { doc: any; locale?: string, slug?: string }) => string | Promise<string>
+export type GenerateURL = (args: { doc: any; locale?: string, slug?: string }) => string | Promise<string>
 
 export type AIOptions = {
   gpt3?: GPTAIOptions
-  getPageContent: <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
+  getPageContent: (args: { doc: any; locale?: string, slug?: string }) => string | Promise<string>
   metaTitle?: {
-    postProcess?:  (args: { doc: any, generatedTitle: string, pageContent: string, locale: string}) => string
-    prefix?: (args: { doc: any, pageContent: string, locale: string}) => string
-    suffix?: (args: { doc: any, pageContent: string, locale: string}) => string
+    postProcess?:  (args: { doc: any, generatedTitle: string, pageContent: string, locale: string, slug?: string}) => string
+    prefix?: (args: { doc: any, pageContent: string, locale: string, slug?: string}) => string
+    suffix?: (args: { doc: any, pageContent: string, locale: string, slug?: string}) => string
   },
   metaDescription?: {
-    postProcess?:  (args: { doc: any, generatedDescription: string, pageContent: string, locale: string}) => string
-    prefix?: (args: { doc: any, pageContent: string, locale: string}) => string
-    suffix?: (args: { doc: any, pageContent: string, locale: string}) => string
+    postProcess?:  (args: { doc: any, generatedDescription: string, pageContent: string, locale: string, slug?: string}) => string
+    prefix?: (args: { doc: any, pageContent: string, locale: string, slug?: string}) => string
+    suffix?: (args: { doc: any, pageContent: string, locale: string, slug?: string}) => string
   }
 }
 
@@ -32,14 +33,14 @@ export type GPTAIOptions = {
     maxTokens?: number // Default: 20
     temperature?: number // The creativity of the AI. Default: 0.4
     model?: GPT3Model // Default: text-davinci-003
-    prompt?: (args: { pageContent: string, locale: string }) => string // Optional
+    prompt?: (args: { pageContent: string, locale: string, slug?: string }) => string // Optional
     stop?: string // Optional
   },
   metaDescription?: {
     maxTokens?: number // Default: 50
     temperature?: number // The creativity of the AI. Default: 0.4
     model?: GPT3Model // Default: text-davinci-003
-    prompt?: (args: { pageContent: string, locale: string }) => string // Optional
+    prompt?: (args: { pageContent: string, locale: string, slug?: string }) => string // Optional
     stop?: string // Optional
   }
 }

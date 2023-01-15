@@ -17,6 +17,7 @@ const {
 type TextareaFieldWithProps = TextareaField & {
   path: string
   pluginConfig: PluginConfig
+  slug?: string
 };
 
 export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
@@ -27,6 +28,7 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
     label,
     name,
     pluginConfig,
+    slug
   } = props as TextareaFieldWithProps || {}; // TODO: this typing is temporary until payload types are updated for custom field props
 
   const locale = useLocale();
@@ -53,7 +55,7 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
       setReadOnly(true);
       let generatedDescription;
       if (typeof generateDescription === 'function') {
-        generatedDescription = await generateDescription({ doc: { ...fields }, locale });
+        generatedDescription = await generateDescription({ doc: { ...fields }, locale, slug });
       }
       setValue(generatedDescription);
       setReadOnly(false);
@@ -75,10 +77,10 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
 
       let pageContent: string|undefined;
       if (typeof ai?.getPageContent === 'function') {
-        pageContent = await ai?.getPageContent({ doc: { ...fields }, locale });
+        pageContent = await ai?.getPageContent({ doc: { ...fields }, locale, slug });
       }
       if(pageContent) {
-        setValue(await generateAIMetaDescriptionClient({ doc: { ...fields },pageContent, locale }));
+        setValue(await generateAIMetaDescriptionClient({ doc: { ...fields },pageContent, locale, slug }));
       }else{
         setValue("Error: No page content found.")
       }

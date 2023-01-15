@@ -20,11 +20,15 @@ export type GPTAIOptions = {
     maxTokens?: number // Default: 20
     temperature?: number // The creativity of the AI. Default: 0.4
     model?: string // Default: text-davinci-003
+    prompt?: ({pageContent, locale}: {pageContent: string, locale: string}) => string // Optional
+    stop?: string // Optional
   },
   metaDescription?: {
     maxTokens?: number // Default: 50
     temperature?: number // The creativity of the AI. Default: 0.4
     model?: string // Default: text-davinci-003
+    prompt?: ({pageContent, locale}: {pageContent: string, locale: string}) => string // Optional
+    stop?: string // Optional
   }
 }
 

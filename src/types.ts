@@ -13,20 +13,22 @@ export type AIOptions = {
   getPageContent: <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
 }
 
+export type GPT3Model = 'text-davinci-003' | 'text-curie-001' | 'text-babbage-001' | 'text-ada-001' | string;
+
 export type GPTAIOptions = {
   apiKeySecret: string
   apiOrganization?: string // Optional
   metaTitle?: {
     maxTokens?: number // Default: 20
     temperature?: number // The creativity of the AI. Default: 0.4
-    model?: string // Default: text-davinci-003
+    model?: GPT3Model // Default: text-davinci-003
     prompt?: ({pageContent, locale}: {pageContent: string, locale: string}) => string // Optional
     stop?: string // Optional
   },
   metaDescription?: {
     maxTokens?: number // Default: 50
     temperature?: number // The creativity of the AI. Default: 0.4
-    model?: string // Default: text-davinci-003
+    model?: GPT3Model // Default: text-davinci-003
     prompt?: ({pageContent, locale}: {pageContent: string, locale: string}) => string // Optional
     stop?: string // Optional
   }

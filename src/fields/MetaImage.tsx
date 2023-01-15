@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useLocale, useConfig } from 'payload/components/utilities';
 import { Props as UploadFieldType } from 'payload/dist/admin/components/forms/field-types/Upload/types';
 import UploadInput from 'payload/dist/admin/components/forms/field-types/Upload/Input';
-import { useField, useAllFormFields } from 'payload/components/forms';
+import { useField, useAllFormFields, reduceFieldsToValues } from 'payload/components/forms';
 import { FieldType, Options } from 'payload/dist/admin/components/forms/useField/types';
 import { Pill } from '../ui/Pill';
 import { PluginConfig } from '../types';
@@ -39,7 +39,8 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
     const getDescription = async () => {
       let generatedImage;
       if (typeof generateImage === 'function') {
-        generatedImage = await generateImage({ doc: { ...fields }, locale, slug });
+        const fieldsReduced = reduceFieldsToValues({...fields}, true);
+        generatedImage = await generateImage({ doc: fieldsReduced, locale, slug });
       }
       setValue(generatedImage);
     }

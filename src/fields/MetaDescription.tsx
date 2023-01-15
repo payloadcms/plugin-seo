@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useField, useAllFormFields } from 'payload/components/forms';
+import { useField, useAllFormFields, reduceFieldsToValues } from 'payload/components/forms';
 import { useLocale } from 'payload/components/utilities';
 import { FieldType, Options } from 'payload/dist/admin/components/forms/useField/types';
 import { LengthIndicator } from '../ui/LengthIndicator';
@@ -55,7 +55,8 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
       setReadOnly(true);
       let generatedDescription;
       if (typeof generateDescription === 'function') {
-        generatedDescription = await generateDescription({ doc: { ...fields }, locale, slug });
+        const fieldsReduced = reduceFieldsToValues({...fields}, true);
+        generatedDescription = await generateDescription({ doc: fieldsReduced, locale, slug });
       }
       setValue(generatedDescription);
       setReadOnly(false);
@@ -76,11 +77,12 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
       setValue("Generating...")
 
       let pageContent: string|undefined;
+      const fieldsReduced = reduceFieldsToValues({...fields}, true);
       if (typeof ai?.getPageContent === 'function') {
-        pageContent = await ai?.getPageContent({ doc: { ...fields }, locale, slug });
+        pageContent = await ai?.getPageContent({ doc: fieldsReduced, locale, slug });
       }
       if(pageContent) {
-        setValue(await generateAIMetaDescriptionClient({ doc: { ...fields },pageContent, locale, slug }));
+        setValue(await generateAIMetaDescriptionClient({ doc: fieldsReduced, pageContent, locale, slug }));
       }else{
         setValue("Error: No page content found.")
       }

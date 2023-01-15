@@ -8,6 +8,7 @@ import { LengthIndicator } from '../ui/LengthIndicator';
 import { defaults } from '../defaults';
 import { PluginConfig } from '../types';
 import { generateAIMetaTitleClient } from '../ai/Generator';
+import { reduceFieldsToValues } from 'payload/components/forms'
 
 const {
   minLength,
@@ -52,8 +53,9 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
     const getTitle = async () => {
       setReadOnly(true);
       let generatedTitle;
+      const fieldsReduced = reduceFieldsToValues({...fields}, true);
       if (typeof generateTitle === 'function') {
-        generatedTitle = await generateTitle({ doc: { ...fields }, locale, slug });
+        generatedTitle = await generateTitle({ doc: fieldsReduced, locale, slug });
       }
       setValue(generatedTitle);
       setReadOnly(false);
@@ -74,11 +76,12 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
       setValue("Generating...")
 
       let pageContent: string|undefined;
+      const fieldsReduced = reduceFieldsToValues({...fields}, true);
       if (typeof ai?.getPageContent === 'function') {
-        pageContent = await ai?.getPageContent({ doc: { ...fields }, locale, slug });
+        pageContent = await ai?.getPageContent({ doc: fieldsReduced, locale, slug });
       }
       if(pageContent) {
-        setValue(await generateAIMetaTitleClient({ doc: { ...fields }, pageContent, locale, slug }));
+        setValue(await generateAIMetaTitleClient({ doc: fieldsReduced, pageContent, locale, slug }));
       }else{
         setValue("Error: No page content found.")
       }

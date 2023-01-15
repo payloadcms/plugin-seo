@@ -1,4 +1,4 @@
-import { useWatchForm } from 'payload/components/forms';
+import { reduceFieldsToValues, useAllFormFields } from 'payload/components/forms';
 import React, { useEffect, useState } from 'react';
 import { Field } from 'payload/dist/admin/components/forms/Form/types';
 import { PluginConfig } from '../types';
@@ -15,7 +15,7 @@ export const Preview: React.FC<PreviewFieldWithProps | {}> = (props) => {
     slug
   } = props as PreviewFieldWithProps || {}; // TODO: this typing is temporary until payload types are updated for custom field props;
 
-  const { fields } = useWatchForm();
+  const [fields] = useAllFormFields();
 
   const {
     'meta.title': {
@@ -31,7 +31,9 @@ export const Preview: React.FC<PreviewFieldWithProps | {}> = (props) => {
   useEffect(() => {
     const getHref = async () => {
       if (typeof generateURL === 'function' && !href) {
-        const newHref = await generateURL({ doc: { fields }, slug })
+        const fieldsReduced = reduceFieldsToValues({...fields}, true);
+
+        const newHref = await generateURL({ doc: fieldsReduced, slug })
         setHref(newHref);
       }
     }

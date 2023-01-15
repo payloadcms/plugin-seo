@@ -3,7 +3,14 @@ import {  NextFunction, Response } from 'express';
 import { PayloadRequest } from 'payload/dist/express/types';
 import { PluginConfig } from '../types';
 
-export async function generateAIMetaTitleClient<T = any>({ doc, pageContent, locale, slug }: {doc: T, pageContent: string, locale: string, slug?: string}): Promise<String> {
+export async function generateAIMetaTitleClient<T = any>({ doc, pageContent, locale, slug, pluginConfig }: {doc: T, pageContent: string, locale: string, slug?: string, pluginConfig: PluginConfig}): Promise<String> {
+
+    const maxLength = pluginConfig.ai?.metaTitle?.maxInputPageContentLength ? pluginConfig.ai.metaTitle.maxInputPageContentLength : 10000;
+
+    if(pageContent.length >maxLength){
+        pageContent = pageContent.substring(0, maxLength);
+    }
+
     const response = await (await fetch('/api/plugin-seo/ai/gpt3/generateAIMetaTitle', {
         method: 'post',
         headers: {
@@ -50,8 +57,8 @@ export const generateAIMetaTitleServer = async ({handler: {req, res, next}, plug
         model: pluginConfig.ai?.gpt3?.metaTitle?.model ? pluginConfig.ai.gpt3.metaTitle.model : "text-davinci-003",
         prompt: prompt,
 
-        max_tokens: pluginConfig.ai?.gpt3?.metaTitle?.maxTokens ? pluginConfig.ai.gpt3.metaTitle.maxTokens : 20,
-        temperature: pluginConfig.ai?.gpt3?.metaTitle?.temperature ? pluginConfig.ai.gpt3.metaTitle.temperature : 0.4,
+        max_tokens: pluginConfig.ai?.gpt3?.metaTitle?.maxTokens ? pluginConfig.ai.gpt3.metaTitle.maxTokens : 25,
+        temperature: pluginConfig.ai?.gpt3?.metaTitle?.temperature ? pluginConfig.ai.gpt3.metaTitle.temperature : 0.5,
         stop:  pluginConfig.ai?.gpt3?.metaTitle?.stop ? pluginConfig.ai.gpt3.metaTitle.stop : ["than 50 characters long:"],
         suffix: suffix,
     })
@@ -73,7 +80,14 @@ export const generateAIMetaTitleServer = async ({handler: {req, res, next}, plug
 
 
 
-export async function generateAIMetaDescriptionClient<T = any>({ doc, pageContent, locale, slug }: {doc: T, pageContent: string, locale: string, slug?: string}): Promise<String> {
+export async function generateAIMetaDescriptionClient<T = any>({ doc, pageContent, locale, slug, pluginConfig }: {doc: T, pageContent: string, locale: string, slug?: string, pluginConfig: PluginConfig}): Promise<String> {
+
+    const maxLength = pluginConfig.ai?.metaDescription?.maxInputPageContentLength ? pluginConfig.ai.metaDescription.maxInputPageContentLength : 10000;
+
+    if(pageContent.length >maxLength){
+        pageContent = pageContent.substring(0, maxLength);
+    }
+
     const response = await (await fetch('/api/plugin-seo/ai/gpt3/generateAIMetaDescription', {
         method: 'post',
         headers: {
@@ -118,7 +132,7 @@ export const generateAIMetaDescriptionServer = async ({handler: {req, res, next}
         model: pluginConfig.ai?.gpt3?.metaDescription?.model ? pluginConfig.ai.gpt3.metaDescription.model : "text-davinci-003", // = instruct series
         prompt: prompt,
         max_tokens: pluginConfig.ai?.gpt3?.metaDescription?.maxTokens ? pluginConfig.ai.gpt3.metaDescription.maxTokens : 50,
-        temperature: pluginConfig.ai?.gpt3?.metaDescription?.temperature ? pluginConfig.ai.gpt3.metaDescription.temperature : 0.4,
+        temperature: pluginConfig.ai?.gpt3?.metaDescription?.temperature ? pluginConfig.ai.gpt3.metaDescription.temperature : 0.5,
         stop: pluginConfig.ai?.gpt3?.metaDescription?.stop ? pluginConfig.ai.gpt3.metaDescription.stop : ["than 50 characters long:"],
         suffix: suffix,
     })

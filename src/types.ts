@@ -16,11 +16,13 @@ export type AIOptions = {
     postProcess?:  (args: { doc: any, generatedTitle: string, pageContent: string, locale: string, slug?: string}) => string
     prefix?: (args: { doc: any, pageContent: string, locale: string, slug?: string}) => string
     suffix?: (args: { doc: any, pageContent: string, locale: string, slug?: string}) => string
+    maxInputPageContentLength?: number // Default: 10000
   },
   metaDescription?: {
     postProcess?:  (args: { doc: any, generatedDescription: string, pageContent: string, locale: string, slug?: string}) => string
     prefix?: (args: { doc: any, pageContent: string, locale: string, slug?: string}) => string
     suffix?: (args: { doc: any, pageContent: string, locale: string, slug?: string}) => string
+    maxInputPageContentLength?: number // Default: 10000
   }
 }
 
@@ -30,15 +32,15 @@ export type GPTAIOptions = {
   apiKeySecret: string
   apiOrganization?: string // Optional
   metaTitle?: {
-    maxTokens?: number // Default: 20
-    temperature?: number // The creativity of the AI. Default: 0.4
+    maxTokens?: number // Default: 25
+    temperature?: number // The creativity of the AI. Default: 0.5
     model?: GPT3Model // Default: text-davinci-003
     prompt?: (args: { pageContent: string, locale: string, slug?: string }) => string // Optional
     stop?: string // Optional
   },
   metaDescription?: {
     maxTokens?: number // Default: 50
-    temperature?: number // The creativity of the AI. Default: 0.4
+    temperature?: number // The creativity of the AI. Default: 0.5
     model?: GPT3Model // Default: text-davinci-003
     prompt?: (args: { pageContent: string, locale: string, slug?: string }) => string // Optional
     stop?: string // Optional

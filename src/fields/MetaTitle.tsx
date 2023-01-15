@@ -108,7 +108,7 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
         }}
       >
         <div>
-          {label}
+          {typeof label === 'string' ? label : (label ? label?.[locale] : 'Error')}
           &nbsp;
           &mdash;
           &nbsp;

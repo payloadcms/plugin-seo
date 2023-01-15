@@ -78,7 +78,7 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
         pageContent = await ai?.getPageContent({ doc: { ...fields }, locale });
       }
       if(pageContent) {
-        setValue(await generateAIMetaDescriptionClient({ pageContent, locale }));
+        setValue(await generateAIMetaDescriptionClient({ doc: { ...fields },pageContent, locale }));
       }else{
         setValue("Error: No page content found.")
       }

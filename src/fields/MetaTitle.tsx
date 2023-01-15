@@ -76,7 +76,7 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
         pageContent = await ai?.getPageContent({ doc: { ...fields }, locale });
       }
       if(pageContent) {
-        setValue(await generateAIMetaTitleClient({ pageContent, locale }));
+        setValue(await generateAIMetaTitleClient({ doc: { ...fields }, pageContent, locale }));
       }else{
         setValue("Error: No page content found.")
       }

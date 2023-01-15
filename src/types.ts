@@ -12,14 +12,14 @@ export type AIOptions = {
   gpt3?: GPTAIOptions
   getPageContent: <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
   metaTitle?: {
-    postProcess?:  (args: { generatedTitle: string, pageContent: string, locale: string}) => string
-    prefix?: (args: { pageContent: string, locale: string}) => string
-    suffix?: (args: { pageContent: string, locale: string}) => string
+    postProcess?:  (args: { doc: any, generatedTitle: string, pageContent: string, locale: string}) => string
+    prefix?: (args: { doc: any, pageContent: string, locale: string}) => string
+    suffix?: (args: { doc: any, pageContent: string, locale: string}) => string
   },
   metaDescription?: {
-    postProcess?:  (args: { generatedDescription: string, pageContent: string, locale: string}) => string
-    prefix?: (args: { pageContent: string, locale: string}) => string
-    suffix?: (args: { pageContent: string, locale: string}) => string
+    postProcess?:  (args: { doc: any, generatedDescription: string, pageContent: string, locale: string}) => string
+    prefix?: (args: { doc: any, pageContent: string, locale: string}) => string
+    suffix?: (args: { doc: any, pageContent: string, locale: string}) => string
   }
 }
 

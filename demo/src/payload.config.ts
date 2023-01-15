@@ -7,6 +7,7 @@ import Pages from './collections/Pages'
 import Media from './collections/Media'
 import HomePage from './globals/Settings'
 import Posts from './collections/Posts'
+import { Node } from 'slate'
 
 export default buildConfig({
   serverURL: 'http://localhost:3000',
@@ -60,7 +61,18 @@ export default buildConfig({
       uploadsCollection: 'media',
       generateTitle: ({ doc }: any) => `Website.com — ${doc?.title?.value}`,
       generateDescription: ({ doc }: any) => doc?.excerpt?.value,
-      generateURL: ({ doc }: any) => `https://yoursite.com/${doc?.slug?.value || ''}`
+      generateURL: ({ doc }: any) => `https://yoursite.com/${doc?.slug?.value || ''}`,
+      ai: {
+        gpt3: {
+          apiKeySecret: process.env.GPT3_SECRET
+        },
+        getPageContent: ({doc, locale}: {doc: any, locale: string}) => {
+          if(doc?.content?.value) { // richText field
+            return doc?.content.value.map(n => Node.string(n)).join('\n');
+          }
+          return doc?.excerpt?.value; // text field
+        }
+      }
     }),
   ],
   typescript: {

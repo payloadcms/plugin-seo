@@ -1,4 +1,4 @@
-import { Config } from 'payload/config';
+import { Config, Endpoint } from 'payload/config';
 import { getMetaDescriptionField } from './fields/MetaDescription';
 import { Overview } from './ui/Overview';
 import { getMetaTitleField } from './fields/MetaTitle';
@@ -6,6 +6,7 @@ import { getPreviewField } from './ui/Preview';
 import { getMetaImageField } from './fields/MetaImage';
 import { PluginConfig } from './types';
 import { Field, GroupField, TabsField } from 'payload/dist/fields/config/types';
+import { generateAIMetaDescriptionServer, generateAIMetaTitleServer } from './ai/Generator';
 
 const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
   const seoFields: GroupField[] = [
@@ -71,8 +72,30 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
     }
   ]
 
+  const endpoints: Endpoint[] = [];
+
+  if(pluginConfig?.ai?.gpt3) {
+    endpoints.push({
+      path: '/plugin-seo/ai/gpt3/generateAIMetaTitle',
+      method: 'post',
+      handler: async (req, res, next) => {
+        return generateAIMetaTitleServer({handler: { req, res, next }, pluginConfig})
+      }
+    });
+
+    endpoints.push({
+      path: '/plugin-seo/ai/gpt3/generateAIMetaDescription',
+      method: 'post',
+      handler: async (req, res, next) => {
+        return generateAIMetaDescriptionServer({handler: { req, res, next }, pluginConfig})
+      }
+    });
+  }
+
+
   return ({
     ...config,
+    endpoints: endpoints,
     collections: config.collections?.map((collection) => {
       const { slug } = collection;
       const isEnabled = pluginConfig?.collections?.includes(slug);

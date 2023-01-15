@@ -7,6 +7,7 @@ import { defaults } from '../defaults';
 import TextareaInput from 'payload/dist/admin/components/forms/field-types/Textarea/Input';
 import { TextareaField } from 'payload/dist/fields/config/types';
 import { PluginConfig } from '../types';
+import { generateAIMetaDescriptionClient } from '../ai/Generator';
 
 const {
   minLength,
@@ -61,6 +62,31 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
     locale
   ]);
 
+  const regenerateDescriptionWithAI = useCallback(() => {
+    const { ai } = pluginConfig;
+
+    const getDescription = async () => {
+      setValue("Generating...")
+
+      let pageContent: string|undefined;
+      if (typeof ai?.getPageContent === 'function') {
+        pageContent = await ai?.getPageContent({ doc: { ...fields }, locale });
+      }
+      if(pageContent) {
+        setValue(await generateAIMetaDescriptionClient({ pageContent, locale }));
+      }else{
+        setValue("Error: No page content found.")
+      }
+    }
+
+    getDescription();
+  }, [
+    fields,
+    setValue,
+    pluginConfig,
+    locale
+  ]);
+
   return (
     <div
       style={{
@@ -93,6 +119,28 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
           >
             Auto-generate
           </button>
+          {pluginConfig.ai && (
+            <>
+              &nbsp;
+              &mdash;
+              &nbsp;
+              <button
+                onClick={regenerateDescriptionWithAI}
+                type="button"
+                style={{
+                  padding: 0,
+                  background: 'none',
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  color: 'currentcolor',
+                }}
+              >
+                AI-generate
+              </button>
+            </>
+          )}
         </div>
         <div
           style={{

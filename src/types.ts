@@ -8,6 +8,26 @@ export type GenerateDescription = <T = any>(args: {
 export type GenerateImage = <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
 export type GenerateURL = <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
 
+export type AIOptions = {
+  gpt3?: GPTAIOptions
+  getPageContent: <T = any>(args: { doc: T; locale?: string }) => string | Promise<string>
+}
+
+export type GPTAIOptions = {
+  apiKeySecret: string
+  apiOrganization?: string // Optional
+  metaTitle?: {
+    maxTokens?: number // Default: 20
+    temperature?: number // The creativity of the AI. Default: 0.4
+    model?: string // Default: text-davinci-003
+  },
+  metaDescription?: {
+    maxTokens?: number // Default: 50
+    temperature?: number // The creativity of the AI. Default: 0.4
+    model?: string // Default: text-davinci-003
+  }
+}
+
 export type PluginConfig = {
   collections?: string[]
   globals?: string[]
@@ -18,6 +38,7 @@ export type PluginConfig = {
   generateDescription?: GenerateDescription
   generateImage?: GenerateImage
   generateURL?: GenerateURL
+  ai?: AIOptions
 }
 
 export type Meta = {

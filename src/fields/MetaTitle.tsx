@@ -7,6 +7,7 @@ import { FieldType as FieldType, Options } from 'payload/dist/admin/components/f
 import { LengthIndicator } from '../ui/LengthIndicator';
 import { defaults } from '../defaults';
 import { PluginConfig } from '../types';
+import { generateAIMetaTitleClient } from '../ai/Generator';
 
 const {
   minLength,
@@ -59,6 +60,30 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
     locale,
   ]);
 
+  const regenerateTitleWithAI = useCallback(() => {
+    const { ai } = pluginConfig;
+
+    const getTitle = async () => {
+      setValue("Generating...")
+
+      let pageContent: string|undefined;
+      if (typeof ai?.getPageContent === 'function') {
+        pageContent = await ai?.getPageContent({ doc: { ...fields }, locale });
+      }
+      if(pageContent) {
+        setValue(await generateAIMetaTitleClient({ pageContent, locale }));
+      }else{
+        setValue("Error: No page content found.")
+      }
+    }
+    getTitle();
+  }, [
+    fields,
+    setValue,
+    pluginConfig,
+    locale,
+  ]);
+
   return (
     <div
       style={{
@@ -91,6 +116,28 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
           >
             Auto-generate
           </button>
+          {pluginConfig.ai && (
+            <>
+              &nbsp;
+              &mdash;
+              &nbsp;
+              <button
+                onClick={regenerateTitleWithAI}
+                type="button"
+                style={{
+                  padding: 0,
+                  background: 'none',
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  color: 'currentcolor',
+                }}
+              >
+                AI-generate
+              </button>
+            </>
+          )}
         </div>
         <div
           style={{

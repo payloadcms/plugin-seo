@@ -22,6 +22,10 @@ const Posts: CollectionConfig = {
             type: 'text',
           },
           {
+            name: 'content',
+            type: 'richText',
+          },
+          {
             name: 'slug',
             type: 'text',
             required: true,

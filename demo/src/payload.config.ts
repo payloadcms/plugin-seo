@@ -77,7 +77,7 @@ export default buildConfig({
             return `Website.com - `;
           },
           suffix: ({doc, pageContent, locale, slug}) => {
-            return ` | 2033`;
+            return ` | 2023`;
           },
           postProcess: ( {doc, generatedTitle, pageContent, locale} ) => generatedTitle
         }

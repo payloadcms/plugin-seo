@@ -73,24 +73,26 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
       >
         <div>
           {label}
-          &nbsp;
-          &mdash;
-          &nbsp;
-          <button
-            onClick={regenerateTitle}
-            type="button"
-            style={{
-              padding: 0,
-              background: 'none',
-              border: 'none',
-              backgroundColor: 'transparent',
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              color: 'currentcolor',
-            }}
-          >
-            Auto-generate
-          </button>
+          {typeof pluginConfig.generateTitle === 'function' && (
+            <>
+              &nbsp; &mdash; &nbsp;
+              <button
+                onClick={regenerateTitle}
+                type="button"
+                style={{
+                  padding: 0,
+                  background: 'none',
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  color: 'currentcolor',
+                }}
+              >
+                Auto-generate
+              </button>
+            </>
+          )}
         </div>
         <div
           style={{

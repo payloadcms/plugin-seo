@@ -75,24 +75,26 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
       >
         <div>
           {label}
-          &nbsp;
-          &mdash;
-          &nbsp;
-          <button
-            onClick={regenerateDescription}
-            type="button"
-            style={{
-              padding: 0,
-              background: 'none',
-              border: 'none',
-              backgroundColor: 'transparent',
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              color: 'currentcolor',
-            }}
-          >
-            Auto-generate
-          </button>
+          {typeof pluginConfig.generateDescription === 'function' && (
+            <>
+              &nbsp; &mdash; &nbsp;
+              <button
+                onClick={regenerateDescription}
+                type="button"
+                style={{
+                  padding: 0,
+                  background: 'none',
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  color: 'currentcolor',
+                }}
+              >
+                Auto-generate
+              </button>
+            </>
+          )}
         </div>
         <div
           style={{

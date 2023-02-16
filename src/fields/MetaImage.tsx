@@ -77,24 +77,26 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
       >
         <div>
           {label}
-          &nbsp;
-          &mdash;
-          &nbsp;
-          <button
-            onClick={regenerateImage}
-            type="button"
-            style={{
-              padding: 0,
-              background: 'none',
-              border: 'none',
-              backgroundColor: 'transparent',
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              color: 'currentcolor',
-            }}
-          >
-            Auto-generate
-          </button>
+          {typeof pluginConfig.generateImage === 'function' && (
+            <>
+              &nbsp; &mdash; &nbsp;
+              <button
+                onClick={regenerateImage}
+                type="button"
+                style={{
+                  padding: 0,
+                  background: 'none',
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  color: 'currentcolor',
+                }}
+              >
+                Auto-generate
+              </button>
+            </>
+          )}
         </div>
         <div
           style={{

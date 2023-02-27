@@ -43,9 +43,9 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
     showError
   } = field;
 
-  const regenerateDescription = useCallback(() => {
-    const { generateDescription } = pluginConfig;
+  const {generateDescription} = pluginConfig
 
+  const regenerateDescription = useCallback(() => {
     const getDescription = async () => {
       let generatedDescription;
       if (typeof generateDescription === 'function') {
@@ -75,13 +75,14 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
       >
         <div>
           {label}
-          &nbsp;
-          &mdash;
-          &nbsp;
-          <button
-            onClick={regenerateDescription}
-            type="button"
-            style={{
+          { typeof generateDescription === 'function' && <>
+            &nbsp;
+            &mdash;
+            &nbsp;
+            <button
+              onClick={regenerateDescription}
+              type="button"
+              style={{
               padding: 0,
               background: 'none',
               border: 'none',
@@ -89,17 +90,18 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
               cursor: 'pointer',
               textDecoration: 'underline',
               color: 'currentcolor',
-            }}
-          >
-            Auto-generate
-          </button>
+              }}
+            >
+                Auto-generate
+            </button>
+          </>}
         </div>
         <div
           style={{
             color: '#9A9A9A',
           }}
         >
-          {`This should be between ${minLength} and ${maxLength} characters. Auto-generation will format a description using the page content. For help in writing quality meta descriptions, see `}
+          {`This should be between ${minLength} and ${maxLength} characters. ${typeof generateDescription === 'function' ? "Auto-generation will format a description using the page content. " : ""}For help in writing quality meta descriptions, see `}
           <a
             href="https://developers.google.com/search/docs/advanced/appearance/snippet#meta-descriptions"
             rel="noopener noreferrer"

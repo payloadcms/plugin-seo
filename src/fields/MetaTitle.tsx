@@ -99,7 +99,11 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = (props) => {
             color: '#9A9A9A',
           }}
         >
-          {`This should be between ${minLength} and ${maxLength} characters. Auto-generation will format a title using the page title. For help in writing quality meta titles, see `}
+          {`This should be between ${minLength} and ${maxLength} characters. ${
+            typeof pluginConfig.generateTitle === "function"
+              ? "Auto-generation will format a title using the page title."
+              : ""
+          }  For help in writing quality meta titles, see `}
           <a
             href="https://developers.google.com/search/docs/advanced/appearance/title-link#page-titles"
             rel="noopener noreferrer"

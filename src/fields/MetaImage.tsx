@@ -98,13 +98,15 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
             </>
           )}
         </div>
-        <div
-          style={{
-            color: '#9A9A9A',
-          }}
-        >
-          Auto-generation will retrieve the selected hero image.
-        </div>
+        {typeof pluginConfig.generateImage === "function" && (
+          <div
+            style={{
+              color: "#9A9A9A",
+            }}
+          >
+            Auto-generation will retrieve the selected hero image.
+          </div>
+        )}
       </div>
       <div
         style={{

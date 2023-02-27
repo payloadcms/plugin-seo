@@ -101,7 +101,11 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
             color: '#9A9A9A',
           }}
         >
-          {`This should be between ${minLength} and ${maxLength} characters. Auto-generation will format a description using the page content. For help in writing quality meta descriptions, see `}
+          {`This should be between ${minLength} and ${maxLength} characters. ${
+            typeof pluginConfig.generateDescription === "function"
+              ? "Auto-generation will format a description using the page content."
+              : ""
+          } For help in writing quality meta descriptions, see `}
           <a
             href="https://developers.google.com/search/docs/advanced/appearance/snippet#meta-descriptions"
             rel="noopener noreferrer"

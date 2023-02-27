@@ -32,8 +32,8 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
     showError,
   } = field;
 
+  const { generateImage } = pluginConfig;
   const regenerateImage = useCallback(() => {
-    const { generateImage } = pluginConfig;
     const getDescription = async () => {
       let generatedImage;
       if (typeof generateImage === 'function') {
@@ -77,31 +77,33 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
       >
         <div>
           {label}
-          &nbsp;
-          &mdash;
-          &nbsp;
-          <button
-            onClick={regenerateImage}
-            type="button"
-            style={{
-              padding: 0,
-              background: 'none',
-              border: 'none',
-              backgroundColor: 'transparent',
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              color: 'currentcolor',
-            }}
-          >
-            Auto-generate
-          </button>
+          { typeof generateImage === 'function' && <>
+            &nbsp;
+            &mdash;
+            &nbsp;
+            <button
+              onClick={regenerateImage}
+              type="button"
+              style={{
+                  padding: 0,
+                  background: 'none',
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  color: 'currentcolor',
+              }}
+              >
+              Auto-generate
+            </button>
+          </>}
         </div>
         <div
           style={{
             color: '#9A9A9A',
           }}
         >
-          Auto-generation will retrieve the selected hero image.
+          {typeof generateImage === 'function' ? "Auto-generation will retrieve the selected hero image." : ""}
         </div>
       </div>
       <div

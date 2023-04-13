@@ -95,7 +95,7 @@ const seo = (pluginConfig: PluginConfig) => (config: Config): Config => {
 
   return ({
     ...config,
-    endpoints: endpoints,
+    endpoints: [...(config.endpoints || []), ...endpoints],
     collections: config.collections?.map((collection) => {
       const { slug } = collection;
       const isEnabled = pluginConfig?.collections?.includes(slug);

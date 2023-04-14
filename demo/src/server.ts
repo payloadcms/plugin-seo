@@ -1,18 +1,19 @@
-import express from 'express';
-import payload from 'payload';
-import { seed } from './seed';
+import express from 'express'
+import payload from 'payload'
+import { seed } from './seed'
 
-require('dotenv').config();
-const app = express();
+require('dotenv').config()
+
+const app = express()
 
 // Redirect root to Admin panel
 app.get('/', (_, res) => {
-  res.redirect('/admin');
-});
+  res.redirect('/admin')
+})
 
 // Initialize Payload
 const start = async () => {
-  await payload.initAsync({
+  await payload.init({
     secret: process.env.PAYLOAD_SECRET,
     mongoURL: process.env.MONGODB_URI,
     express: app,
@@ -22,10 +23,10 @@ const start = async () => {
   })
 
   if (process.env.PAYLOAD_SEED === 'true') {
-    await seed(payload);
+    await seed(payload)
   }
 
-  app.listen(3000);
+  app.listen(3000)
 }
 
-start();
+start()

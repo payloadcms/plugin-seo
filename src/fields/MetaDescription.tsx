@@ -1,65 +1,62 @@
-import React, { useCallback } from 'react';
-import { useField, useAllFormFields } from 'payload/components/forms';
-import { useLocale } from 'payload/components/utilities';
-import { FieldType, Options } from 'payload/dist/admin/components/forms/useField/types';
-import { LengthIndicator } from '../ui/LengthIndicator';
-import { defaults } from '../defaults';
-import TextareaInput from 'payload/dist/admin/components/forms/field-types/Textarea/Input';
-import { TextareaField } from 'payload/dist/fields/config/types';
-import { PluginConfig } from '../types';
+import React, { useCallback } from 'react'
+import { useField, useAllFormFields } from 'payload/components/forms'
+import { useLocale } from 'payload/components/utilities'
+import { FieldType, Options } from 'payload/dist/admin/components/forms/useField/types'
+import TextareaInput from 'payload/dist/admin/components/forms/field-types/Textarea/Input'
+import { TextareaField } from 'payload/dist/fields/config/types'
+import { LengthIndicator } from '../ui/LengthIndicator'
+import { defaults } from '../defaults'
+import { PluginConfig } from '../types'
 
-const {
-  minLength,
-  maxLength,
-} = defaults.description;
+const { minLength, maxLength } = defaults.description
 
 type TextareaFieldWithProps = TextareaField & {
   path: string
   pluginConfig: PluginConfig
-};
+}
 
-export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
-  pluginConfig: PluginConfig
-}> = (props) => {
-  const {
-    path,
-    label,
-    name,
-    pluginConfig,
-  } = props as TextareaFieldWithProps || {}; // TODO: this typing is temporary until payload types are updated for custom field props
+export const MetaDescription: React.FC<
+  (TextareaFieldWithProps | {}) & {
+    pluginConfig: PluginConfig
+  }
+> = props => {
+  const { path, label, name, pluginConfig } = (props as TextareaFieldWithProps) || {} // TODO: this typing is temporary until payload types are updated for custom field props
 
-  const locale = useLocale();
-  const [fields] = useAllFormFields();
+  const locale = useLocale()
+  const [fields] = useAllFormFields()
 
   const field: FieldType<string> = useField({
     label,
     name,
-    path
-  } as Options);
+    path,
+  } as Options)
 
-  const {
-    value,
-    setValue,
-    showError
-  } = field;
+  const { value, setValue, showError } = field
 
   const regenerateDescription = useCallback(() => {
-    const { generateDescription } = pluginConfig;
+    const { generateDescription } = pluginConfig
 
     const getDescription = async () => {
-      let generatedDescription;
+      let generatedDescription
       if (typeof generateDescription === 'function') {
-        generatedDescription = await generateDescription({ doc: { ...fields }, locale });
+        generatedDescription = await generateDescription({ doc: { ...fields }, locale })
       }
-      setValue(generatedDescription);
+      setValue(generatedDescription)
     }
-    getDescription();
-  }, [
-    fields,
-    setValue,
-    pluginConfig,
-    locale
-  ]);
+    getDescription()
+  }, [fields, setValue, pluginConfig, locale])
+
+  function renderLabel() {
+    if (typeof label === 'string') {
+      return label
+    }
+
+    if (typeof label === 'object' && label !== null && locale in label) {
+      return label[locale]
+    }
+
+    return 'Error'
+  }
 
   return (
     <div
@@ -74,7 +71,8 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
         }}
       >
         <div>
-          {label}
+          {renderLabel()}
+
           {typeof pluginConfig.generateDescription === 'function' && (
             <>
               &nbsp; &mdash; &nbsp;
@@ -124,7 +122,7 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
           value={value}
           showError={showError}
           style={{
-            marginBottom: 0
+            marginBottom: 0,
           }}
         />
       </div>
@@ -135,16 +133,10 @@ export const MetaDescription: React.FC<(TextareaFieldWithProps | {}) & {
           width: '100%',
         }}
       >
-        <LengthIndicator
-          text={value as string}
-          minLength={minLength}
-          maxLength={maxLength}
-        />
+        <LengthIndicator text={value as string} minLength={minLength} maxLength={maxLength} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export const getMetaDescriptionField = (props: any) => (
-  <MetaDescription {...props} />
-)
+export const getMetaDescriptionField = (props: any) => <MetaDescription {...props} />

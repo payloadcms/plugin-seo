@@ -1,67 +1,59 @@
-import React, { useCallback } from 'react';
-import { useLocale, useConfig } from 'payload/components/utilities';
-import { Props as UploadFieldType } from 'payload/dist/admin/components/forms/field-types/Upload/types';
-import UploadInput from 'payload/dist/admin/components/forms/field-types/Upload/Input';
-import { useField, useAllFormFields } from 'payload/components/forms';
-import { FieldType, Options } from 'payload/dist/admin/components/forms/useField/types';
-import { Pill } from '../ui/Pill';
-import { PluginConfig } from '../types';
+import React, { useCallback } from 'react'
+import { useLocale, useConfig } from 'payload/components/utilities'
+import { Props as UploadFieldType } from 'payload/dist/admin/components/forms/field-types/Upload/types'
+import UploadInput from 'payload/dist/admin/components/forms/field-types/Upload/Input'
+import { useField, useAllFormFields } from 'payload/components/forms'
+import { FieldType, Options } from 'payload/dist/admin/components/forms/useField/types'
+import { Pill } from '../ui/Pill'
+import { PluginConfig } from '../types'
 
 type UploadFieldWithProps = UploadFieldType & {
   path: string
   pluginConfig: PluginConfig
-};
+}
 
-export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
-  const {
-    label,
-    relationTo,
-    fieldTypes,
-    name,
-    pluginConfig,
-  } = props as UploadFieldWithProps || {}; // TODO: this typing is temporary until payload types are updated for custom field props
+export const MetaImage: React.FC<UploadFieldWithProps | {}> = props => {
+  const { label, relationTo, fieldTypes, name, pluginConfig } =
+    (props as UploadFieldWithProps) || {} // TODO: this typing is temporary until payload types are updated for custom field props
 
-  const field: FieldType<string> = useField(props as Options);
+  const field: FieldType<string> = useField(props as Options)
 
-  const [fields] = useAllFormFields();
-  const locale = useLocale();
+  const [fields] = useAllFormFields()
+  const locale = useLocale()
 
-  const {
-    value,
-    setValue,
-    showError,
-  } = field;
+  const { value, setValue, showError } = field
 
   const regenerateImage = useCallback(() => {
-    const { generateImage } = pluginConfig;
+    const { generateImage } = pluginConfig
     const getDescription = async () => {
-      let generatedImage;
+      let generatedImage
       if (typeof generateImage === 'function') {
-        generatedImage = await generateImage({ doc: { ...fields }, locale });
+        generatedImage = await generateImage({ doc: { ...fields }, locale })
       }
-      setValue(generatedImage);
+      setValue(generatedImage)
     }
-    getDescription();
-  }, [
-    fields,
-    setValue,
-    pluginConfig,
-    locale,
-  ]);
+    getDescription()
+  }, [fields, setValue, pluginConfig, locale])
 
-  const hasImage = Boolean(value);
+  const hasImage = Boolean(value)
 
-  const config = useConfig();
+  const config = useConfig()
 
-  const {
-    collections,
-    serverURL,
-    routes: {
-      api,
-    } = {},
-  } = config;
+  const { collections, serverURL, routes: { api } = {} } = config
 
-  const collection = collections?.find((coll) => coll.slug === relationTo) || undefined;
+  const collection = collections?.find(coll => coll.slug === relationTo) || undefined
+
+  function renderLabel() {
+    if (typeof label === 'string') {
+      return label
+    }
+
+    if (typeof label === 'object' && label !== null && locale in label) {
+      return label[locale]
+    }
+
+    return 'Error'
+  }
 
   return (
     <div
@@ -76,7 +68,7 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
         }}
       >
         <div>
-          {label}
+          {renderLabel()}
           {typeof pluginConfig.generateImage === 'function' && (
             <>
               &nbsp; &mdash; &nbsp;
@@ -98,10 +90,10 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
             </>
           )}
         </div>
-        {typeof pluginConfig.generateImage === "function" && (
+        {typeof pluginConfig.generateImage === 'function' && (
           <div
             style={{
-              color: "#9A9A9A",
+              color: '#9A9A9A',
             }}
           >
             Auto-generation will retrieve the selected hero image.
@@ -120,12 +112,12 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
           name={name}
           relationTo={relationTo}
           value={value}
-          onChange={(incomingImage) => {
+          onChange={incomingImage => {
             if (incomingImage !== null) {
-              const { id: incomingID } = incomingImage;
-              setValue(incomingID);
+              const { id: incomingID } = incomingImage
+              setValue(incomingID)
             } else {
-              setValue(null);
+              setValue(null)
             }
           }}
           label={undefined}
@@ -153,10 +145,7 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = (props) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export const getMetaImageField = (props: any) => (
-  <MetaImage {...props} />
-)
-
+export const getMetaImageField = (props: any) => <MetaImage {...props} />

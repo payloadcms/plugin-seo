@@ -1,51 +1,40 @@
-import { useAllFormFields } from 'payload/components/forms';
-import React, { useEffect, useState } from 'react';
-import { Field } from 'payload/dist/admin/components/forms/Form/types';
-import { useLocale } from 'payload/components/utilities';
-import { PluginConfig } from '../types';
+import { useAllFormFields } from 'payload/components/forms'
+import React, { useEffect, useState } from 'react'
+import { Field } from 'payload/dist/admin/components/forms/Form/types'
+import { useLocale } from 'payload/components/utilities'
+import { PluginConfig } from '../types'
 
 type PreviewFieldWithProps = Field & {
   pluginConfig: PluginConfig
 }
-export const Preview: React.FC<PreviewFieldWithProps | {}> = (props) => {
+export const Preview: React.FC<PreviewFieldWithProps | {}> = props => {
   const {
-    pluginConfig: {
-      generateURL
-    }
-  } = props as PreviewFieldWithProps || {}; // TODO: this typing is temporary until payload types are updated for custom field props;
+    pluginConfig: { generateURL },
+  } = (props as PreviewFieldWithProps) || {} // TODO: this typing is temporary until payload types are updated for custom field props;
 
-  const locale = useLocale();
+  const locale = useLocale()
   const [fields] = useAllFormFields()
 
   const {
-    'meta.title': {
-      value: metaTitle,
-    } = {} as Field,
-    'meta.description': {
-      value: metaDescription,
-    } = {} as Field,
-  } = fields;
+    'meta.title': { value: metaTitle } = {} as Field,
+    'meta.description': { value: metaDescription } = {} as Field,
+  } = fields
 
-  const [href, setHref] = useState<string>();
+  const [href, setHref] = useState<string>()
 
   useEffect(() => {
     const getHref = async () => {
       if (typeof generateURL === 'function' && !href) {
         const newHref = await generateURL({ doc: { fields }, locale })
-        setHref(newHref);
+        setHref(newHref)
       }
     }
-    getHref();
-  }, [
-    generateURL,
-    fields
-  ]);
+    getHref()
+  }, [generateURL, fields])
 
   return (
     <div>
-      <div>
-        Preview
-      </div>
+      <div>Preview</div>
       <div
         style={{
           marginBottom: '5px',
@@ -98,9 +87,7 @@ export const Preview: React.FC<PreviewFieldWithProps | {}> = (props) => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export const getPreviewField = (props: any) => (
-  <Preview {...props} />
-)
+export const getPreviewField = (props: any) => <Preview {...props} />

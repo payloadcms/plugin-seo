@@ -21,9 +21,8 @@ export type GenerateURL = <T = any>(
 ) => string | Promise<string>
 
 interface FieldOptions {
-  title: boolean
-  description: boolean
-  image: boolean
+  required: boolean
+  localized: boolean
 }
 
 export interface PluginConfig {
@@ -32,8 +31,11 @@ export interface PluginConfig {
   uploadsCollection?: string
   fields?: Field[]
   tabbedUI?: boolean
-  required?: FieldOptions
-  localized?: FieldOptions
+  fieldOptions?: {
+    title?: FieldOptions
+    description?: FieldOptions
+    image?: FieldOptions
+  }
   interfaceName?: string
   generateTitle?: GenerateTitle
   generateDescription?: GenerateDescription

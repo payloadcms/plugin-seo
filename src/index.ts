@@ -33,8 +33,8 @@ const seo =
           {
             name: 'title',
             type: 'text',
-            localized: pluginConfig.localized?.title ?? true,
-            required: pluginConfig.required?.title ?? false,
+            localized: pluginConfig.fieldOptions?.title?.localized ?? true,
+            required: pluginConfig.fieldOptions?.title?.required ?? false,
             admin: {
               components: {
                 Field: props => getMetaTitleField({ ...props, pluginConfig }),
@@ -44,8 +44,8 @@ const seo =
           {
             name: 'description',
             type: 'textarea',
-            localized: pluginConfig.localized?.description ?? true,
-            required: pluginConfig.required?.description ?? false,
+            localized: pluginConfig.fieldOptions?.description?.localized ?? true,
+            required: pluginConfig.fieldOptions?.description?.required ?? false,
             admin: {
               components: {
                 Field: props => getMetaDescriptionField({ ...props, pluginConfig }),
@@ -59,8 +59,8 @@ const seo =
                   name: 'image',
                   label: 'Meta Image',
                   type: 'upload',
-                  localized: pluginConfig.localized?.image ?? true,
-                  required: pluginConfig.required?.image ?? false,
+                  localized: pluginConfig.fieldOptions?.image?.localized ?? true,
+                  required: pluginConfig.fieldOptions?.image?.required ?? false,
                   relationTo: pluginConfig?.uploadsCollection,
                   admin: {
                     description:

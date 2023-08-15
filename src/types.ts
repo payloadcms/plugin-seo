@@ -20,14 +20,20 @@ export type GenerateURL = <T = any>(
   args: ContextType & { doc: T; locale?: string },
 ) => string | Promise<string>
 
+interface FieldOptions {
+  title: boolean
+  description: boolean
+  image: boolean
+}
+
 export interface PluginConfig {
   collections?: string[]
   globals?: string[]
   uploadsCollection?: string
   fields?: Field[]
   tabbedUI?: boolean
-  required?: boolean
-  localized?: boolean
+  required?: FieldOptions
+  localized?: FieldOptions
   interfaceName?: string
   generateTitle?: GenerateTitle
   generateDescription?: GenerateDescription

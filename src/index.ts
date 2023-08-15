@@ -11,8 +11,6 @@ import { getPreviewField } from './ui/Preview'
 const seo =
   (pluginConfig: PluginConfig) =>
   (config: Config): Config => {
-    const localized = pluginConfig.localized ?? true
-    const required = pluginConfig.required ?? false
     const interfaceName = pluginConfig.interfaceName
 
     const seoFields: GroupField[] = [
@@ -35,8 +33,8 @@ const seo =
           {
             name: 'title',
             type: 'text',
-            localized,
-            required,
+            localized: pluginConfig.localized?.title ?? true,
+            required: pluginConfig.required?.title ?? false,
             admin: {
               components: {
                 Field: props => getMetaTitleField({ ...props, pluginConfig }),
@@ -46,8 +44,8 @@ const seo =
           {
             name: 'description',
             type: 'textarea',
-            localized,
-            required,
+            localized: pluginConfig.localized?.description ?? true,
+            required: pluginConfig.required?.description ?? false,
             admin: {
               components: {
                 Field: props => getMetaDescriptionField({ ...props, pluginConfig }),
@@ -61,8 +59,8 @@ const seo =
                   name: 'image',
                   label: 'Meta Image',
                   type: 'upload',
-                  localized,
-                  required,
+                  localized: pluginConfig.localized?.image ?? true,
+                  required: pluginConfig.required?.image ?? false,
                   relationTo: pluginConfig?.uploadsCollection,
                   admin: {
                     description:

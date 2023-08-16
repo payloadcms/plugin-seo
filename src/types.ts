@@ -21,8 +21,8 @@ export type GenerateURL = <T = any>(
 ) => string | Promise<string>
 
 interface FieldOptions {
-  required: boolean
-  localized: boolean
+  required?: boolean
+  localized?: boolean
 }
 
 export interface PluginConfig {

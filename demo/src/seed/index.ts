@@ -27,6 +27,7 @@ export const seed = async (payload: Payload) => {
       slug: 'home',
       excerpt: 'This is the home page',
       meta: {
+        title: 'Website.com — Home Page',
         image: mountainPhotoID,
       },
     },
@@ -39,6 +40,7 @@ export const seed = async (payload: Payload) => {
       slug: 'hello-world',
       excerpt: 'This is a post',
       meta: {
+        title: 'Website.com — Hello, world!',
         image: mountainPhotoID,
       },
     },

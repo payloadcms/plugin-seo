@@ -11,14 +11,12 @@ import { getPreviewField } from './ui/Preview'
 const seo =
   (pluginConfig: PluginConfig) =>
   (config: Config): Config => {
-    const interfaceName = pluginConfig.interfaceName
-
     const seoFields: GroupField[] = [
       {
         name: 'meta',
         label: 'SEO',
         type: 'group',
-        interfaceName,
+        interfaceName: pluginConfig.interfaceName,
         fields: [
           {
             name: 'overview',

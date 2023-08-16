@@ -30,7 +30,7 @@ export default buildConfig({
       return newConfig
     },
   },
-  collections: [Users, Pages, Posts, Media],
+  collections: [Users, Media, Pages, Posts],
   globals: [HomePage],
   localization: {
     locales: ['en', 'es', 'de'],
@@ -50,6 +50,16 @@ export default buildConfig({
           label: 'og:title',
         },
       ],
+      interfaceName: 'Meta',
+      fieldOptions: {
+        title: {
+          required: true,
+        },
+        image: {
+          localized: false,
+          required: true,
+        },
+      },
       generateTitle: (data: any) => `Website.com — ${data?.doc?.title?.value}`,
       generateDescription: ({ doc }: any) => doc?.excerpt?.value,
       generateURL: ({ doc, locale }: any) =>

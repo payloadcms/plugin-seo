@@ -1,5 +1,5 @@
 import type { ContextType } from 'payload/dist/admin/components/utilities/DocumentInfo/types'
-import type { Field } from 'payload/dist/fields/config/types'
+import type { Field, FieldBase } from 'payload/dist/fields/config/types'
 
 export type GenerateTitle = <T = any>(
   args: ContextType & { doc: T; locale?: string },
@@ -20,10 +20,7 @@ export type GenerateURL = <T = any>(
   args: ContextType & { doc: T; locale?: string },
 ) => string | Promise<string>
 
-interface FieldOptions {
-  required?: boolean
-  localized?: boolean
-}
+type FieldOptions = Pick<FieldBase, 'required' | 'localized'>
 
 export interface PluginConfig {
   collections?: string[]

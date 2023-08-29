@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useCallback } from 'react'
-import { useAllFormFields, useField } from 'payload/components/forms'
+import { Label, useAllFormFields, useField } from 'payload/components/forms'
 import { useDocumentInfo, useLocale } from 'payload/components/utilities'
 import TextareaInput from 'payload/dist/admin/components/forms/field-types/Textarea/Input'
 import { FieldType, Options } from 'payload/dist/admin/components/forms/useField/types'
@@ -23,7 +23,7 @@ export const MetaDescription: React.FC<
     pluginConfig: PluginConfig
   }
 > = props => {
-  const { path, label, name, pluginConfig } = (props as TextareaFieldWithProps) || {} // TODO: this typing is temporary until payload types are updated for custom field props
+  const { path, label, name, pluginConfig, required } = (props as TextareaFieldWithProps) || {} // TODO: this typing is temporary until payload types are updated for custom field props
 
   const locale = useLocale()
   const [fields] = useAllFormFields()
@@ -35,7 +35,7 @@ export const MetaDescription: React.FC<
     path,
   } as Options)
 
-  const { value, setValue, showError } = field
+  const { value, setValue, showError, errorMessage } = field
 
   const regenerateDescription = useCallback(async () => {
     const { generateDescription } = pluginConfig
@@ -86,6 +86,17 @@ export const MetaDescription: React.FC<
               </button>
             </>
           )}
+
+          {required && (
+            <span
+              style={{
+                marginLeft: '5px',
+                color: 'var(--theme-error-500)',
+              }}
+            >
+              *
+            </span>
+          )}
         </div>
         <div
           style={{
@@ -114,6 +125,8 @@ export const MetaDescription: React.FC<
           onChange={setValue}
           value={value}
           showError={showError}
+          errorMessage={errorMessage}
+          required={required}
           style={{
             marginBottom: 0,
           }}

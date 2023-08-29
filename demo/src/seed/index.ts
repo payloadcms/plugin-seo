@@ -1,7 +1,7 @@
 import path from 'path'
 import type { Payload } from 'payload'
 
-export const seed = async (payload: Payload) => {
+export const seed = async (payload: Payload): Promise<void> => {
   payload.logger.info('Seeding data...')
 
   await payload.create({
@@ -28,6 +28,7 @@ export const seed = async (payload: Payload) => {
       excerpt: 'This is the home page',
       meta: {
         title: 'Website.com — Home Page',
+        description: 'This is the home page',
         image: mountainPhotoID,
       },
     },
@@ -41,6 +42,7 @@ export const seed = async (payload: Payload) => {
       excerpt: 'This is a post',
       meta: {
         title: 'Website.com — Hello, world!',
+        description: 'This is the home page',
         image: mountainPhotoID,
       },
     },

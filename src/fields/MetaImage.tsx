@@ -16,7 +16,7 @@ type UploadFieldWithProps = UploadFieldType & {
 }
 
 export const MetaImage: React.FC<UploadFieldWithProps | {}> = props => {
-  const { label, relationTo, fieldTypes, name, pluginConfig } =
+  const { label, relationTo, fieldTypes, name, pluginConfig, required } =
     (props as UploadFieldWithProps) || {} // TODO: this typing is temporary until payload types are updated for custom field props
 
   const field: FieldType<string> = useField(props as Options)
@@ -25,7 +25,7 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = props => {
   const [fields] = useAllFormFields()
   const docInfo = useDocumentInfo()
 
-  const { value, setValue, showError } = field
+  const { value, setValue, showError, errorMessage } = field
 
   const regenerateImage = useCallback(async () => {
     const { generateImage } = pluginConfig
@@ -84,6 +84,16 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = props => {
               </button>
             </>
           )}
+          {required && (
+            <span
+              style={{
+                marginLeft: '5px',
+                color: 'var(--theme-error-500)',
+              }}
+            >
+              *
+            </span>
+          )}
         </div>
         {typeof pluginConfig.generateImage === 'function' && (
           <div
@@ -117,6 +127,7 @@ export const MetaImage: React.FC<UploadFieldWithProps | {}> = props => {
           }}
           label={undefined}
           showError={showError}
+          errorMessage={errorMessage}
           api={api}
           collection={collection}
           serverURL={serverURL}

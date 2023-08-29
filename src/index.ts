@@ -16,7 +16,7 @@ const seo =
         name: 'meta',
         label: 'SEO',
         type: 'group',
-        interfaceName: pluginConfig.interfaceName,
+        interfaceName: pluginConfig.interfaceName ?? 'meta',
         fields: [
           {
             name: 'overview',
@@ -31,24 +31,22 @@ const seo =
           {
             name: 'title',
             type: 'text',
-            localized: pluginConfig.fieldOptions?.title?.localized ?? true,
-            required: pluginConfig.fieldOptions?.title?.required ?? false,
             admin: {
               components: {
                 Field: props => getMetaTitleField({ ...props, pluginConfig }),
               },
             },
+            ...(pluginConfig?.fieldOverrides?.title ?? {}),
           },
           {
             name: 'description',
             type: 'textarea',
-            localized: pluginConfig.fieldOptions?.description?.localized ?? true,
-            required: pluginConfig.fieldOptions?.description?.required ?? false,
             admin: {
               components: {
                 Field: props => getMetaDescriptionField({ ...props, pluginConfig }),
               },
             },
+            ...(pluginConfig?.fieldOverrides?.description ?? {}),
           },
           ...(pluginConfig?.uploadsCollection
             ? [
@@ -57,8 +55,6 @@ const seo =
                   name: 'image',
                   label: 'Meta Image',
                   type: 'upload',
-                  localized: pluginConfig.fieldOptions?.image?.localized ?? true,
-                  required: pluginConfig.fieldOptions?.image?.required ?? false,
                   relationTo: pluginConfig?.uploadsCollection,
                   admin: {
                     description:
@@ -67,6 +63,7 @@ const seo =
                       Field: props => getMetaImageField({ ...props, pluginConfig }),
                     },
                   },
+                  ...(pluginConfig?.fieldOverrides?.image ?? {}),
                 } as Field,
               ]
             : []),

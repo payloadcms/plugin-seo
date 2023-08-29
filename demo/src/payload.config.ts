@@ -2,6 +2,7 @@ import path from 'path'
 import { buildConfig } from 'payload/config'
 
 // import seo from '../../dist';
+// eslint-disable-next-line import/no-relative-packages
 import seo from '../../src'
 import Media from './collections/Media'
 import Pages from './collections/Pages'
@@ -50,14 +51,14 @@ export default buildConfig({
           label: 'og:title',
         },
       ],
-      interfaceName: 'Meta',
-      fieldOptions: {
+      interfaceName: 'CustomSEOInterfaceName',
+      fieldOverrides: {
         title: {
           required: true,
         },
-        image: {
-          localized: false,
+        description: {
           required: true,
+          localized: true,
         },
       },
       generateTitle: (data: any) => `Website.com — ${data?.doc?.title?.value}`,

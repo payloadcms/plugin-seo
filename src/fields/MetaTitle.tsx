@@ -19,7 +19,7 @@ type TextFieldWithProps = TextFieldType & {
 }
 
 export const MetaTitle: React.FC<TextFieldWithProps | {}> = props => {
-  const { label, name, path, pluginConfig } = (props as TextFieldWithProps) || {} // TODO: this typing is temporary until payload types are updated for custom field props
+  const { label, name, path, pluginConfig, required } = (props as TextFieldWithProps) || {} // TODO: this typing is temporary until payload types are updated for custom field props
 
   const field: FieldType<string> = useField({
     label,
@@ -31,7 +31,7 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = props => {
   const [fields] = useAllFormFields()
   const docInfo = useDocumentInfo()
 
-  const { value, setValue, showError } = field
+  const { value, setValue, showError, errorMessage } = field
 
   const regenerateTitle = useCallback(async () => {
     const { generateTitle } = pluginConfig
@@ -82,6 +82,16 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = props => {
               </button>
             </>
           )}
+          {required && (
+            <span
+              style={{
+                marginLeft: '5px',
+                color: 'var(--theme-error-500)',
+              }}
+            >
+              *
+            </span>
+          )}
         </div>
         <div
           style={{
@@ -111,6 +121,7 @@ export const MetaTitle: React.FC<TextFieldWithProps | {}> = props => {
           onChange={setValue}
           value={value}
           showError={showError}
+          errorMessage={errorMessage}
           style={{
             marginBottom: 0,
           }}

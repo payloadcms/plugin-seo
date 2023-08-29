@@ -87,6 +87,28 @@ export default config;
 
   > If you wish to continue to use top-level or sidebar fields with `tabbedUI`, you must not let the default `Content` tab get created for you (see the note above). Instead, you must define the first field of your config with type `tabs` and place all other fields adjacent to this one.
 
+- `interfaceName` : string | optional
+
+  Rename the meta group interface name that is generated for TypeScript and GraphQL.
+
+- `fieldOverrides` : Partial<Field> | optional
+
+  Pass any valid field props to the base fields: Title, Description or Image.
+
+  ```js
+  seo({
+    ...
+    fieldOverrides: {
+      title: {
+        required: true,
+      },
+      description: {
+        localized: true,
+      },
+    },
+  })
+  ```
+
 - `generateTitle` : method | optional
 
   A function that allows you to return any meta title, including from document's content.

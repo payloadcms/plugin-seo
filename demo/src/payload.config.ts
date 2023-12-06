@@ -1,3 +1,6 @@
+import { webpackBundler } from '@payloadcms/bundler-webpack'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { slateEditor } from '@payloadcms/richtext-slate'
 import path from 'path'
 import { buildConfig } from 'payload/config'
 
@@ -11,8 +14,13 @@ import HomePage from './globals/Settings'
 
 export default buildConfig({
   serverURL: 'http://localhost:3000',
+  db: mongooseAdapter({
+    url: process.env.MONGODB_URI,
+  }),
+  editor: slateEditor({}),
   admin: {
     user: Users.slug,
+    bundler: webpackBundler(),
     webpack: config => {
       const newConfig = {
         ...config,
